@@ -14,9 +14,10 @@ import markersData from './data/companies.json';
 export class MapComponent implements OnInit{
 
   public zoom: number = 10;
-  public center!: google.maps.LatLngLiteral;
+  public center: google.maps.LatLngLiteral = { lat: 19.432608, lng: -99.133209 };
   public mapOptions: google.maps.MapOptions;
   
+  geoJsonFeatures: google.maps.Data.Feature[] = [];
   map!: google.maps.Map;
   data = markersData;
 
@@ -32,6 +33,8 @@ export class MapComponent implements OnInit{
     // this.mapService.onClickMap();
     
     this.mapService.marker.drawActiveMarkers(this.data)
+
+    this.mapService.loadGeoJson('./geodata/geodata.geojson');
   }
 
   async ngOnInit() {

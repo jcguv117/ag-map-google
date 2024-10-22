@@ -35,5 +35,23 @@ export class MapService {
       if(event.latLng) this.marker.addMarker(event.latLng)
     })
   }
+
+  loadGeoJson(url: string) {
+    try {
+      if (this.map) {
+        this.map.data.loadGeoJson(url, {}, (features:any) => {
+          console.log("features:", features)
+        });
+  
+        this.map.data.setStyle({
+          strokeWeight: 2,
+          strokeColor: '#2c3a6e',
+          fillOpacity: 0.2,
+        });
+      }
+    } catch (error) {
+      console.log("loadGeoJson ~ error:", error)
+    }
+  }
   
 }
