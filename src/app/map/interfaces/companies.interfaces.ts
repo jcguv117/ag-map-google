@@ -1,6 +1,7 @@
 export interface Companie {
-    company:       string;
+    name:          string;
     phone:         string;
+    email:         string;
     streetAddress: string;
     website:       string;
     latitude?:      number;

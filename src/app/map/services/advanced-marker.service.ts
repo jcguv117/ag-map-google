@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Companie } from '../interfaces/companies.interfaces';
+import { Hotel } from '../interfaces/hotel.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AdvancedMarkerService {
 
       const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
         map: this.map,
-        content: this.buildCompaniesContent(property),
+        content: this.createContentElement(property),
         // position: property.position,
         position: {lat:property.latitude, lng: property.longitude},
         title: property.description,
@@ -127,25 +127,29 @@ export class AdvancedMarkerService {
     return content;
   }
 
-  buildCompaniesContent(data: Companie) {
+  createContentElement(data: Hotel) {
     const content = document.createElement("div");
   
     content.classList.add("property");
     content.innerHTML = `
       <div class="icon">
-          <i aria-hidden="true" class="fa fa-icon fa-hotel" title="${data.company}"></i>
-          <span class="fa-sr-only">${data.company}</span>
+          <i aria-hidden="true" class="fa fa-icon fa-hotel" title="${data.name}"></i>
+          <span class="fa-sr-only">${data.name}</span>
       </div>
       <div class="details">
-          <div class="text-sm font-bold border-b-2 border-b-gray-200 py-1">${data.company}</div>
+          <div class="text-sm font-bold border-b-2 border-b-gray-200 py-1">${data.name}</div>
           <div class="p-2">
             <div class="flex items-center gap-2 p-1 text-xs">
                 <i aria-hidden="true" class="fa fa-location-dot fa-lg text-red-500"></i>
-                <span>${data.streetAddress}</span>
+                <span>${data.address}</span>
             </div>
             <div class="flex items-center gap-2 p-1 text-xs">
                 <i aria-hidden="true" class="fa fa-phone fa-lg text-blue-500"></i>
                 <span>${data.phone}</span>
+            </div>
+            <div class="flex items-center gap-2 p-1 text-xs">
+                <i aria-hidden="true" class="fa fa-envelope fa-lg text-amber-500"></i>
+                <span>${data.email}</span>
             </div>
             <div class="flex items-center gap-2 p-1 text-xs">
                 <i aria-hidden="true" class="fa fa-globe fa-lg text-gray-500"></i>

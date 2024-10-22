@@ -1,8 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GoogleMapsModule, MapAdvancedMarker } from '@angular/google-maps';
 import { MapService } from './services/map.service';
-import propertiesData from './data/properties.json';
-import markersData from './data/companies.json';
+import markersData from './data/data.json';
 
 @Component({
   selector: 'app-map',
@@ -13,14 +12,14 @@ import markersData from './data/companies.json';
 })
 export class MapComponent implements OnInit{
 
+  map!: google.maps.Map;
   public zoom: number = 10;
   public center: google.maps.LatLngLiteral = { lat: 19.432608, lng: -99.133209 };
   public mapOptions: google.maps.MapOptions;
-  
-  map!: google.maps.Map;
-  data = markersData;
-
   mapService = inject(MapService);
+  
+  data      = markersData;
+  totalData = 100;
 
   constructor() {
     this.mapOptions = this.mapService.mapOptions;
@@ -41,7 +40,7 @@ export class MapComponent implements OnInit{
           fillOpacity: 0,
         });
         // Generar marcadores aleatorios dentro de la geometria del geojson.
-        this.generateRandomData(20)
+        this.generateRandomData(this.totalData)
       })
   }
 
@@ -54,13 +53,8 @@ export class MapComponent implements OnInit{
         const coord = this.mapService.generateRandomCoordinatesInPolygon()
         if(coord) {
           const googleLatLng = new google.maps.LatLng(coord.lat, coord.lng);
-          const data = {
-            company: "Example Inc.",
-            phone: "+00000000",
-            streetAddress: "353",
-            website: "example.com"
-          }
-          const marker = this.mapService.marker.drawMarker(googleLatLng, this.mapService.marker.buildCompaniesContent(data));
+          const data = this.data[index];
+          const marker = this.mapService.marker.drawMarker(googleLatLng, this.mapService.marker.createContentElement(data));
           
           marker.addListener("click", () => {
             this.mapService.marker.toggleHighlight(marker);
