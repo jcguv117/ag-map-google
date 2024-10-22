@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Companie } from '../interfaces/companies.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,9 @@ export class AdvancedMarkerService {
 
       const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
         map: this.map,
-        content: this.buildContent(property),
-        position: property.position,
+        content: this.buildCompaniesContent(property),
+        // position: property.position,
+        position: {lat:property.latitude, lng: property.longitude},
         title: property.description,
       });
 
@@ -56,6 +58,18 @@ export class AdvancedMarkerService {
   }
 
   toggleHighlight(markerView:any, property: any) {
+    // Remove all 'highlight' classes from the content
+    const highlightedElements = document.querySelectorAll('.highlight');
+    highlightedElements.forEach((element: Element) => {
+      element.classList.remove('highlight');
+    });
+
+    if(this.currentMarker) {
+      this.currentMarker.zIndex = 0;
+    }
+
+    // Reset the zIndex
+    markerView.zIndex = null;
     if (markerView.content.classList.contains("highlight")) {
       markerView.content.classList.remove("highlight");
       markerView.zIndex = null;
@@ -63,6 +77,8 @@ export class AdvancedMarkerService {
       markerView.content.classList.add("highlight");
       markerView.zIndex = 1;
     }
+
+    this.currentMarker = markerView;
   }
 
 
@@ -94,6 +110,36 @@ export class AdvancedMarkerService {
               <span class="fa-sr-only">size</span>
               <span>${property.size} ft<sup>2</sup></span>
           </div>
+          </div>
+      </div>
+      `;
+    return content;
+  }
+
+  buildCompaniesContent(data: Companie) {
+    const content = document.createElement("div");
+  
+    content.classList.add("property");
+    content.innerHTML = `
+      <div class="icon">
+          <i aria-hidden="true" class="fa fa-icon fa-hotel" title="${data.company}"></i>
+          <span class="fa-sr-only">${data.company}</span>
+      </div>
+      <div class="details">
+          <div class="text-sm font-bold border-b-2 border-b-gray-200 py-1">${data.company}</div>
+          <div class="p-2">
+            <div class="flex items-center gap-2 p-1 text-xs">
+                <i aria-hidden="true" class="fa fa-location-dot fa-lg text-red-500"></i>
+                <span>${data.streetAddress}</span>
+            </div>
+            <div class="flex items-center gap-2 p-1 text-xs">
+                <i aria-hidden="true" class="fa fa-phone fa-lg text-blue-500"></i>
+                <span>${data.phone}</span>
+            </div>
+            <div class="flex items-center gap-2 p-1 text-xs">
+                <i aria-hidden="true" class="fa fa-globe fa-lg text-gray-500"></i>
+                <span>${data.website}</span>
+            </div>
           </div>
       </div>
       `;

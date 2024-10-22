@@ -7,6 +7,7 @@ body {
     --house-color: #0288D1;
     --shop-color: #7B1FA2;
     --warehouse-color: #558B2F;
+    --hotel-color: #2c3a6e;
   }
 
 .custom-marker {
@@ -45,7 +46,7 @@ body {
     height: 0;
     left: 50%;
     position: absolute;
-    top: 95%;
+    top: 90%;
     transform: translate(-50%, 0);
     transition: all 0.3s ease-out;
     width: 0;
@@ -60,7 +61,7 @@ body {
   }
   
   .property .icon svg {
-    height: 20px;
+    height: 15px;
     width: auto;
   }
   
@@ -102,13 +103,17 @@ body {
     background-color: #FFFFFF;
     border-radius: 8px;
     box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
-    height: 80px;
+    height: 100%;
     padding: 8px 15px;
     width: auto;
+    transform: translate(0, -10px)
   }
   
   .property.highlight::after {
-    border-top: 9px solid #FFFFFF;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid #FFFFFF;
+    top: 99%;
   }
   
   .property.highlight .details {
@@ -160,6 +165,21 @@ body {
   
   .property:not(.highlight):has(.fa-building)::after {
     border-top: 9px solid var(--building-color);
+  }
+
+  /*
+  * Hotel icon colors.
+  */
+  .property.highlight:has(.fa-hotel) .icon {
+    color: var(--hotel-color);
+  }
+
+  .property:not(.highlight):has(.fa-hotel) {
+    background-color: var(--hotel-color);
+  }
+
+  .property:not(.highlight):has(.fa-hotel)::after {
+    border-top: 9px solid var(--hotel-color);
   }
   
   /*
