@@ -29,8 +29,6 @@ export class MapComponent implements OnInit{
     this.map = map;
     this.mapService.setMap(map);
     // this.mapService.onClickMap();
-    
-    // this.mapService.marker.drawActiveMarkers(this.data)
 
     this.mapService.loadGeoJsonPromise('./geodata/geodata.geojson')
       .then((geoData: google.maps.Data) => {
