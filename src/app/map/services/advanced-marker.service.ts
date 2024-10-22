@@ -57,7 +57,18 @@ export class AdvancedMarkerService {
     this.currentMarker = marker;
   }
 
-  toggleHighlight(markerView:any, property: any) {
+
+  drawMarker(location: google.maps.LatLng, content: HTMLElement | null = null): google.maps.marker.AdvancedMarkerElement {
+    let marker = new google.maps.marker.AdvancedMarkerElement({
+      content: content,
+      position: location,
+      map: this.map,
+    });
+    
+    return marker;
+  }
+
+  toggleHighlight(markerView:any, property: any=null) {
     // Remove all 'highlight' classes from the content
     const highlightedElements = document.querySelectorAll('.highlight');
     highlightedElements.forEach((element: Element) => {
