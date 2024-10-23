@@ -58,10 +58,11 @@ export class MapComponent implements OnInit{
   }
 
   updPolygonStyle(value: any) {
+    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
     if(value) {
       this.map?.data.setStyle({
         strokeWeight: 2,
-        strokeColor: '#2c3a6e',
+        strokeColor: primaryColor,
         fillOpacity: 0.1,
       });
     } else {

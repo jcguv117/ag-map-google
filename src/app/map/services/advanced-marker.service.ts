@@ -75,11 +75,11 @@ export class AdvancedMarkerService {
   
     content.classList.add("property");
     content.innerHTML = `
-      <div class="icon">
-          <i aria-hidden="true" class="fa fa-icon fa-hotel" title="${data.name}"></i>
+      <div class="icon flex items-center justify-center text-white">
+          <i aria-hidden="true" class="fa fa-icon fa-hotel h-4 w-auto" title="${data.name}"></i>
           <span class="fa-sr-only">${data.name}</span>
       </div>
-      <div class="details">
+      <div class="details hidden flex-1 flex-col">
           <div class="text-sm font-bold border-b-2 border-b-gray-200 py-1">${data.name}</div>
           <div class="p-2">
             <div class="flex items-center gap-2 p-1 text-xs">
