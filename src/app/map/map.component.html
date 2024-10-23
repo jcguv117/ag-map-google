@@ -8,3 +8,7 @@
     (mapInitialized)="initMap( $event )"
     >
 </google-map>
+<map-panel-control 
+    [sliderValue]="totalData"
+    (changeRangeSliderPanel)="updRandomData($event)" 
+    (changeCheckBoxPanel)="updPolygonStyle($event)"/>

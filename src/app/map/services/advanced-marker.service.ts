@@ -6,14 +6,17 @@ import { Hotel } from '../interfaces/hotel.interfaces';
 })
 export class AdvancedMarkerService {
 
-  map!: google.maps.Map;
-  currentMarker!: google.maps.marker.AdvancedMarkerElement;
-
-  public mapOptions: google.maps.MapOptions = {
+  map: google.maps.Map | null;
+  mapOptions: google.maps.MapOptions = {
     mapId: "4504f8b37365c3d0", // Si se activa se usa los estilos del Cloud
   };
+  
+  currentMarker: google.maps.marker.AdvancedMarkerElement | null = null;
+  activeMarkers: google.maps.marker.AdvancedMarkerElement[] = [];
 
-  constructor() { }
+  constructor() { 
+    this.map = null;
+  }
 
   addMarker(location: google.maps.LatLng) {
     // Borrar marcador anterior.
@@ -29,7 +32,6 @@ export class AdvancedMarkerService {
     this.currentMarker = marker;
   }
 
-
   drawMarker(location: google.maps.LatLng, content: HTMLElement | null = null): google.maps.marker.AdvancedMarkerElement {
     let marker = new google.maps.marker.AdvancedMarkerElement({
       content: content,
@@ -38,6 +40,10 @@ export class AdvancedMarkerService {
     });
     
     return marker;
+  }
+
+  cleanMarkers() {
+    this.activeMarkers.forEach(marker => marker.map = null);
   }
 
   toggleHighlight(markerView:any, property: any=null) {

@@ -7,12 +7,10 @@ import { AdvancedMarkerService } from './advanced-marker.service';
 })
 export class MapService {
 
-  map!:google.maps.Map;
-  currentMarker!: any;
-  public zoom: number = 10;
-  public center!: google.maps.LatLngLiteral;
-
-  mapOptions: google.maps.MapOptions;
+  public map        : google.maps.Map | null;
+  public mapOptions : google.maps.MapOptions;
+  public zoom       : number = 11;
+  public center     : google.maps.LatLngLiteral = { lat: 19.432608, lng: -99.133209 }
 
   geoJsonFeatures: google.maps.Data.Feature[] = [];
 
@@ -20,6 +18,7 @@ export class MapService {
   marker = inject(AdvancedMarkerService);
 
   constructor() {
+    this.map = null;
     this.mapOptions = {
       center: this.center,
       zoom: this.zoom,
@@ -32,8 +31,13 @@ export class MapService {
     this.marker.map = map;
   }
 
+  cleanMap() {
+    this.map = null;
+    this.marker.map = null;
+  }
+
   onClickMap() {
-    this.map.addListener('click', (event: google.maps.MapMouseEvent) => {
+    this.map?.addListener('click', (event: google.maps.MapMouseEvent) => {
       if(event.latLng) this.marker.addMarker(event.latLng)
     })
   }
@@ -43,7 +47,7 @@ export class MapService {
       if (this.map) {
         this.map.data.loadGeoJson(url, {}, (features: google.maps.Data.Feature[]) => {
           this.geoJsonFeatures = features;
-          this.fitMapToGeoJsonBounds(this.map, features);
+          this.fitMapToGeoJsonBounds(features);
         });
       }
     } catch (error) {
@@ -53,24 +57,26 @@ export class MapService {
 
   loadGeoJsonPromise( url: string, props:any=null ): Promise<google.maps.Data>{
     return new Promise<google.maps.Data>(( resolve, reject )=>{
-        this.map.data.loadGeoJson( url,{ ...props },( features ) => {
+        this.map?.data.loadGeoJson( url,{ ...props },( features ) => {
             this.geoJsonFeatures = features;
-            resolve(this.map.data);
+            if(this.map) resolve(this.map.data);
+            else resolve(new google.maps.Data);
         });
     });
   }
 
   // Ajustar el zoom y centro a los límites del GeoJSON
-  fitMapToGeoJsonBounds(map: google.maps.Map, features: google.maps.Data.Feature[]) {
+  fitMapToGeoJsonBounds(features: google.maps.Data.Feature[]) {
+    if(!this.map) return; 
+
     const bounds = new google.maps.LatLngBounds();
-    
     features.forEach((feature) => {
       feature.getGeometry()?.forEachLatLng((latLng) => {
         bounds.extend(latLng);
       });
     });
 
-    map.fitBounds(bounds);
+    this.map.fitBounds(bounds);
   }
 
   generateRandomCoordinatesInPolygon(): google.maps.LatLngLiteral | null {

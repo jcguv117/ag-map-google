@@ -1,0 +1,32 @@
+<div class="z-10 absolute bottom-10 left-5 w-56 h-40 bg-white rounded-md shadow-lg">
+    <div class="m-5">       
+        <div class="relative mb-6">
+            <label for="inputRangeSliderPanel" class="block mb-2 text-sm font-medium text-blue-900">
+                Total de hoteles: <span class="text-base font-bold">{{sliderValue()}}</span>
+            </label>
+            <input 
+                id="inputRangeSliderPanel" 
+                type="range" 
+                class="slider w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                value="{{sliderValue()}}" 
+                (change)="onChangeRangeSliderPanel($event)" />
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">0</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">50</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">100</span>
+        </div>
+        <div class="flex items-center gap-x-5">
+            <span class="text-sm font-medium text-blue-900">Mostrar poligono</span>
+            <label class="relative h-8 w-10 cursor-pointer [-webkit-tap-highlight-color:_transparent]" for="inputCheckBoxPanel">
+                <input 
+                    id="inputCheckBoxPanel" 
+                    type="checkbox" 
+                    class="peer sr-only" 
+                    (change)="onChangeCheckBoxPanel($event)" />
+                <span class="absolute inset-0 m-auto h-2 rounded-full bg-gray-200"></span>
+                <span class="absolute inset-y-0 start-0 m-auto size-4 rounded-full bg-blue-900 transition-all peer-checked:start-6 peer-checked:[&amp;_>_*]:scale-0">
+                    <span class="absolute inset-0 m-auto size-2 rounded-full bg-gray-200 transition"></span>
+                </span>
+            </label>
+        </div>
+    </div>
+</div>
